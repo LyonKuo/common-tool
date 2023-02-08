@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.common.cyberark.springboot.JasyptCyberarkSpringCloudBootstrapConfiguration
+
+org.springframework.cloud.bootstrap.BootstrapConfiguration=com.common.cyberark.springboot.JasyptCyberarkSpringCloudBootstrapConfiguration

@@ -1,0 +1,11 @@
+logging:
+  level:
+    com: info
+
+tp:
+  cyberark:
+    url: https://xxx/pidms/rest/pwd/getPassword
+    appId: App_ZEUS_ALERTCENTER__8e83f2
+    safe: AIM_ZEUS_ALERTCENTER
+    folder: root
+    key: 25736f60b29229d6
