@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+
+    <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}|%highlight(%-5level)|%boldYellow(%X{X-B3-TraceId:-})|%boldYellow(%X{X-B3-SpanId:-})|%boldYellow(%thread)|%boldGreen(%logger{50})|%msg%n" />
+    <property name="FILE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%X{X-B3-TraceId:-}|%X{X-B3-SpanId:-}|%thread|%logger{50}|%msg%n" />
+
+    <property name="FILE_CHARSET" value="UTF-8" />
+    <property name="FILE_MAX_SIZE" value="100MB" />
+    <property name="FILE_MAX_DAY" value="3" />
+
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path" />
+
+    <!-- 输出到console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_PATTERN}</pattern>
+            <charset>${FILE_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 输出到文件（应用日志） -->
+    <appender name="APP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_PATH}/app.log</file>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <charset>${FILE_CHARSET}</charset>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志归档 -->
+            <fileNamePattern>${LOG_PATH}/app-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${FILE_MAX_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>${FILE_MAX_DAY}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 输出到文件（审计日志） -->
+    <appender name="AUDIT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/audit.log</file>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <charset>${FILE_CHARSET}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志归档 -->
+            <fileNamePattern>${LOG_PATH}/audit-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${FILE_MAX_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>${FILE_MAX_DAY}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 输出到文件（SQL慢日志） -->
+    <appender name="SQL_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/sql.log</file>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <charset>${FILE_CHARSET}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志归档 -->
+            <fileNamePattern>${LOG_PATH}/sql-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${FILE_MAX_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>${FILE_MAX_DAY}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 输出到文件（应用日志）：异步 -->
+    <appender name="ASYNC_APP_LOG" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="APP_LOG"/>
+    </appender>
+</included>
